@@ -34,7 +34,7 @@ jobs:
         pip install -r requirements.txt -t package/
         cp handler.py package/
         cd package
-        zip -r ../${{ matrix.service }}.zip .
+        zip -r ./services/${{ matrix.service }}.zip .
 
     - name: Deploy to AWS Lambda
       run: |
