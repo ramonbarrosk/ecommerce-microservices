@@ -37,7 +37,7 @@ jobs:
     - name: Deploy to AWS Lambda
       run: |
         aws lambda update-function-code \
-          --function-name ${{ matrix.service }-service \
+          --function-name service-${{ matrix.service }} \
           --zip-file fileb://${{ matrix.service }}.zip \
           --region us-east-1
       env:
