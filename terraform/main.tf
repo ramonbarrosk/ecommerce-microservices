@@ -60,18 +60,3 @@ resource "aws_api_gateway_deployment" "orders_api_deployment" {
 output "api_url" {
   value = "https://${aws_api_gateway_rest_api.orders_api.id}.execute-api.${data.aws_region.current.name}.amazonaws.com/prod/orders"
 }
-
-resource "aws_iam_role" "lambda_exec" {
-  name = "lambda_execution_role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Action = "sts:AssumeRole",
-      Effect = "Allow",
-      Principal = {
-        Service = "lambda.amazonaws.com"
-      }
-    }]
-  })
-}
