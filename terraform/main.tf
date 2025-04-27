@@ -2,6 +2,8 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "aws_region" "current" {}
+
 resource "aws_lambda_function" "orders" {
   filename         = "../services/orders/deploy.zip"
   function_name    = "orders-service"
