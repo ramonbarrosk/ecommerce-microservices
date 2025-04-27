@@ -32,7 +32,7 @@ jobs:
       working-directory: ./services/${{ matrix.service }}
       run: |
         pip install -r requirements.txt -t package/
-        cp app.py package/
+        cp handler.py package/
         cd package
         zip -r ../${{ matrix.service }}.zip .
 
