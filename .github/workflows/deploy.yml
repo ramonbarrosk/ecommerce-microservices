@@ -1,4 +1,4 @@
-name: Deploy Microservices
+name: Deploy Microservices to AWS Lambda
 
 on:
   push:
@@ -8,23 +8,39 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [orders, products]
 
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
+    - name: Checkout repo
+      uses: actions/checkout@v4
 
-      - name: Configurar AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
 
-      - name: Instalar Terraform
-        uses: hashicorp/setup-terraform@v3
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y awscli
 
-      - name: Inicializar Terraform
-        run: terraform -chdir=terraform init
+    - name: Install dependencies and zip
+      working-directory: ${{ matrix.service }}
+      run: |
+        pip install -r requirements.txt -t package/
+        cp app.py package/
+        cd package
+        zip -r ../${{ matrix.service }}.zip .
 
-      - name: Aplicar Terraform
-        run: terraform -chdir=terraform apply -auto-approve
+    - name: Deploy to AWS Lambda
+      run: |
+        aws lambda update-function-code \
+          --function-name ${{ matrix.service }-service \
+          --zip-file fileb://${{ matrix.service }}.zip \
+          --region us-east-1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-1
