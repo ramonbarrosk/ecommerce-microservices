@@ -40,7 +40,7 @@ jobs:
       run: |
         aws lambda update-function-code \
           --function-name service-${{ matrix.service }} \
-          --zip-file fileb://${{ github.workspace }}/${{ matrix.service }}.zip \  # Referenciando o caminho correto
+          --zip-file fileb://${{ github.workspace }}/${{ matrix.service }}.zip \
           --region us-east-1
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
