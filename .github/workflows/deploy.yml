@@ -29,7 +29,7 @@ jobs:
         aws --version
 
     - name: Install dependencies and zip
-      working-directory: ${{ matrix.service }}
+      working-directory: ./services/${{ matrix.service }}
       run: |
         pip install -r requirements.txt -t package/
         cp app.py package/
