@@ -1,4 +1,4 @@
-def lambda_handler(event, context):
+def handler(event, context):
     return {
         'statusCode': 200,
         'body': 'Hello from orders service!'

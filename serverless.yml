@@ -1,0 +1,25 @@
+service: ecommerce-service
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  stage: dev
+
+plugins:
+  - serverless-offline
+
+functions:
+  ordersFunction:
+    handler: services/orders/handler_orders.handler
+    events:
+      - http:
+          path: orders
+          method: post
+
+  productsFunction:
+    handler: services/products/handler_products.handler
+    events:
+      - http:
+          path: products
+          method: post
