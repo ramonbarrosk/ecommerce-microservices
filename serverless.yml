@@ -22,4 +22,18 @@ functions:
     events:
       - http:
           path: products
+          method: get
+
+  customersFunction:
+    handler: services/customers/handler_customers.handler
+    events:
+      - http:
+          path: customers
+          method: post
+
+  authFunction:
+    handler: services/auth/handler_auth.handler
+    events:
+      - http:
+          path: auth
           method: post
