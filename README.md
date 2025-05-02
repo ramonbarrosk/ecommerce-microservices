@@ -6,8 +6,7 @@ Rodando localmente os services:
 - npm install serverless-offline
 - serverless offline start
 
-
-
 Rodar o banco de dados:
 
-- docker-compose up
+- make up
+- make restore (caso precise criar as tabelas e popular o banco de dados)

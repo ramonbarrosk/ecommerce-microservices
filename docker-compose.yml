@@ -2,16 +2,17 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:13 
+    image: postgres:13
     container_name: postgres_db
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: ecommerce_db 
+      POSTGRES_DB: ecommerce_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
 
 volumes:
   postgres_data:
