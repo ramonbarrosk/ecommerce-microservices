@@ -15,7 +15,11 @@ functions:
     events:
       - http:
           path: orders
-          method: post
+          method: get
+
+      - http:
+          path: orders/{id}
+          method: get 
 
   productsFunction:
     handler: services/products/handler_products.handler
@@ -43,4 +47,10 @@ functions:
     events:
       - http:
           path: shipping
+
+  productSuggestorFunction:
+    handler: services/product_suggestor/handler_product_suggestor.handler
+    events:
+      - http:
+          path: product_suggestor
           method: post
