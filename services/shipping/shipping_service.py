@@ -13,24 +13,25 @@ from auth import validate_token
 json_path = 'services/shipping/MunicipiosBrasil.json'
 
 def get_coordinates(name):
-    municipalities = json.load(json_path)
+    json_path = Path('MunicipiosBrasil.json')
+    with open(json_path, 'r', encoding='utf-8') as f:
+      municipalities = json.load(f)
 
     for m in municipalities:
         if m[4] == name:
-            return m[1], m[2]
+            lat = float(m[1].replace(',', '.'))
+            long = float(m[2].replace(',', '.'))
+            return lat, long
     
     return False
 
-def calculate_shipping(cep):
-
+def calculate_distance(cep):
     city = ''
 
     if len(cep) == 8:
         link = f'https://viacep.com.br/ws/{cep}/json/'
 
         request = requests.get(link)
-
-        print(request)
 
         dic_request = request.json()
 
@@ -47,10 +48,10 @@ def calculate_shipping(cep):
 
     destination = [lat, long]
 
-    origin = [-9.645, -35.733]
-    distance = geodesic(origin, destino).kilometers
+    origin = ['-9.645', '-35.733']
+    distance = geodesic(origin, destination).kilometers
 
-    return round(distance, 2)    
+    return round(distance, 2) 
 
 def handler(event, context):
     #token = event['headers'].get('Authorization', '').replace('Bearer ', '')
@@ -74,7 +75,10 @@ def handler(event, context):
               }
         }
     
-    shipping = calculate_shipping(cep) 
+    distance = calculate_distance(cep)
+    base_price = 10.00
+    price_per_km = 0.10
+    shipping_price = base_price + (shipping * price_per_km)
 
     if shipping == False:
         return {
@@ -87,7 +91,7 @@ def handler(event, context):
 
     return {
             'statusCode': 200,
-            'body': json.dumps({'frete': shipping}),
+            'body': json.dumps({'frete': shipping_price}),
             'headers': {
                 'Content-Type': 'application/json'
             }
