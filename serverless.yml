@@ -37,3 +37,10 @@ functions:
       - http:
           path: auth
           method: post
+  
+  shippingFunction:
+    handler: services/shipping/shipping_service.handler
+    events:
+      - http:
+          path: shipping
+          method: post
