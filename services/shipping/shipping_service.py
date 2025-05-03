@@ -12,7 +12,7 @@ from auth import validate_token
 
 json_path = 'services/shipping/MunicipiosBrasil.json'
 
-def get_coordenadas(name):
+def get_coordinates(name):
     municipalities = json.load(json_path)
 
     for m in municipalities:
@@ -23,32 +23,34 @@ def get_coordenadas(name):
 
 def calculate_shipping(cep):
 
-    cidade = ''
+    city = ''
 
     if len(cep) == 8:
         link = f'https://viacep.com.br/ws/{cep}/json/'
 
-        requisicao = requests.get(link)
+        request = requests.get(link)
 
-        print(requisicao)
+        print(request)
 
-        dic_requisicao = requisicao.json()
+        dic_request = request.json()
 
-        cidade = dic_requisicao['localidade']
+        city = dic_request['localidade']
     else:
         return False
 
-    nome = unidecode(cidade).upper()
+    name = unidecode(city).upper()
 
-    latitude, longitude = get_coordenadas(nome)
+    lat, long = get_coordinates(name)
 
-    if latitude == False: return False
-    if longitude == False: return False
+    if lat == False: return False
+    if long == False: return False
 
-    origem = [-9.645, -35.733]
-    distancia = geodesic(origem, destino).kilometers
+    destination = [lat, long]
 
-    return round(distancia, 2)    
+    origin = [-9.645, -35.733]
+    distance = geodesic(origin, destino).kilometers
+
+    return round(distance, 2)    
 
 def handler(event, context):
     #token = event['headers'].get('Authorization', '').replace('Bearer ', '')
