@@ -54,14 +54,14 @@ def calculate_distance(cep):
     return round(distance, 2) 
 
 def handler(event, context):
-    #token = event['headers'].get('Authorization', '').replace('Bearer ', '')
+    token = event['headers'].get('Authorization', '').replace('Bearer ', '')
 
     user_data = validate_token(token)
-    # if not user_data:
-    #     return {
-    #         'statusCode': 401,
-    #         'body': json.dumps({'message': 'Unauthorized'})
-    #     }
+    if not user_data:
+        return {
+            'statusCode': 401,
+            'body': json.dumps({'message': 'Unauthorized'})
+        }
     
     body = json.loads(event.get('body', {}))
     cep = body.get('cep')
