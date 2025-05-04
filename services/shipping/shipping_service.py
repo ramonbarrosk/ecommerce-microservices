@@ -23,7 +23,7 @@ def get_coordinates(name):
             long = float(m[2].replace(',', '.'))
             return lat, long
     
-    return False
+    return False, False
 
 def calculate_distance(cep):
     city = ''
