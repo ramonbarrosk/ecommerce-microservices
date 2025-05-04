@@ -10,10 +10,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'c
 from db import get_connection
 from auth import validate_token
 
-json_path = 'services/shipping/MunicipiosBrasil.json'
+municipalities_path = 'services/shipping/MunicipiosBrasil.json'
 
 def get_coordinates(name):
-    json_path = Path('MunicipiosBrasil.json')
+    json_path = Path(municipalities_path)
     with open(json_path, 'r', encoding='utf-8') as f:
       municipalities = json.load(f)
 
@@ -24,34 +24,41 @@ def get_coordinates(name):
             return lat, long
     
     return False, False
-
 def calculate_distance(cep):
     city = ''
 
-    if len(cep) == 8:
-        link = f'https://viacep.com.br/ws/{cep}/json/'
-
-        request = requests.get(link)
-
-        dic_request = request.json()
-
-        city = dic_request['localidade']
-    else:
+    if len(cep) != 8:
         return False
 
-    name = unidecode(city).upper()
+    try:
+        link = f'https://viacep.com.br/ws/{cep}/json/'
+        response = requests.get(link, timeout=5)
 
-    lat, long = get_coordinates(name)
+        response.raise_for_status()
+        data = response.json()
 
-    if lat == False: return False
-    if long == False: return False
+        if 'erro' in data:
+            return False 
 
-    destination = [lat, long]
+        city = data.get('localidade')
+        if not city:
+            return False
 
-    origin = ['-9.645', '-35.733']
-    distance = geodesic(origin, destination).kilometers
+        name = unidecode(city).upper()
 
-    return round(distance, 2) 
+        lat, long = get_coordinates(name)
+        if lat is False or long is False:
+            return False
+
+        destination = [lat, long]
+        origin = [-9.645, -35.733]
+        distance = geodesic(origin, destination).kilometers
+
+        return round(distance, 2)
+
+    except (requests.RequestException, ValueError, KeyError) as e:
+        print(f"Erro ao calcular distância: {e}")
+        return False
 
 def handler(event, context):
     token = event['headers'].get('Authorization', '').replace('Bearer ', '')
@@ -78,9 +85,9 @@ def handler(event, context):
     distance = calculate_distance(cep)
     base_price = 10.00
     price_per_km = 0.10
-    shipping_price = base_price + (shipping * price_per_km)
+    shipping_price = base_price + (distance * price_per_km)
 
-    if shipping == False:
+    if distance == False:
         return {
             'statusCode': 400,
             'body': json.dumps({'message': 'CEP INVALIDO'}),
