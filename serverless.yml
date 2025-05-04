@@ -47,6 +47,7 @@ functions:
     events:
       - http:
           path: shipping
+          method: post
 
   productSuggestorFunction:
     handler: services/product_suggestor/handler_product_suggestor.handler
