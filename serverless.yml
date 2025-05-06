@@ -60,3 +60,34 @@ functions:
       - http:
           path: product_suggestor
           method: post
+
+  cartAddItemFunction:
+    handler: services/cart/handler_cart_add_item.handler
+    events:
+      - http:
+          path: cart/add_item
+          method: post
+
+  cartDeleteItemFunction:
+    handler: services/cart/handler_cart_remove_item.handler
+    events:
+      - http:
+          path: cart
+          method: delete
+      - http:
+          path: cart/remove_item/{id}
+          method: delete 
+
+  cartFunction:
+    handler: services/cart/handler_cart.handler
+    events:
+      - http:
+          path: cart
+          method: get
+  
+  paymentFunction:
+    handler: services/cart/handler_end_payment.handler
+    events:
+      - http:
+          path: checkout
+          method: post
