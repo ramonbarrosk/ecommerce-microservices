@@ -57,6 +57,46 @@ def remove_item_from_cart(user_id, product_id, cursor, conn):
             'headers': {'Content-Type': 'application/json'}
         }
 
+def remove_all_items_cart(cursor, conn):
+    try:
+        cursor.execute("""
+            SELECT id FROM orders
+            WHERE customer_id = %s AND status = 'pending'
+            LIMIT 1;
+        """, (user_id,))
+        result = cursor.fetchone()
+
+        if not result:
+            return {
+                'statusCode': 404,
+                'body': json.dumps({'message': 'No active cart found'}),
+                'headers': {'Content-Type': 'application/json'}
+            }
+
+        order_id = result[0]
+
+        cursor.execute("""
+            DELETE FROM order_items
+            WHERE order_id = %s;
+        """, (order_id))
+
+        cursor.execute("""
+            SELECT COUNT(*) FROM order_items WHERE order_id = %s;
+        """, (order_id,))
+        item_count = cursor.fetchone()[0]
+
+        if item_count == 0:
+            cursor.execute("""
+                DELETE FROM orders WHERE id = %s;
+            """, (order_id,))
+
+        conn.commit()
+
+        return {
+            'statusCode': 200,
+            'body': json.dumps({'message': 'All items from cart removed successfully'}),
+            'headers': {'Content-Type': 'application/json'}
+        }
 
 def handler(event, context):
     token = event['headers'].get('Authorization', '').replace('Bearer ', '')
@@ -72,16 +112,12 @@ def handler(event, context):
     body = json.loads(event['body'])
     product_id = body.get('product_id')
 
-    if not product_id:
-        return {
-            'statusCode': 400,
-            'body': json.dumps({'message': 'product_id is required'}),
-            'headers': {'Content-Type': 'application/json'}
-        }
-
     conn = get_connection()
     cursor = conn.cursor()
     user_id = user_data['sub']
+
+    if not product_id:
+        return remove_all_items_cart(cursor, conn)
 
     response = remove_item_from_cart(user_id, product_id, cursor, conn)
 

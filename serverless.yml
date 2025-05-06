@@ -60,26 +60,29 @@ functions:
     handler: services/cart/handler_cart_add_item.handler
     events:
       - http:
-          path: handler_cart_add_item
+          path: cart
           method: post
 
   cartDeleteItemFunction:
     handler: services/cart/handler_cart_remove_item.handler
     events:
       - http:
-          path: handler_cart_remove_item
+          path: cart
           method: delete
+      - http:
+          path: cart/{id}
+          method: delete 
 
   cartFunction:
     handler: services/cart/handler_cart.handler
     events:
       - http:
-          path: handler_cart
+          path: cart
           method: get
   
   paymentFunction:
     handler: services/cart/handler_end_payment.handler
     events:
       - http:
-          path: handler_end_payment
+          path: checkout
           method: post
