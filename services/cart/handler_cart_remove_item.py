@@ -8,7 +8,7 @@ from db import get_connection
 from auth import validate_token
 
 
-def remove_item_from_cart(user_id, product_id, cursor, conn):
+def remove_item_from_cart(user_id, item_id, cursor, conn):
     try:
         cursor.execute("""
             SELECT id FROM orders
@@ -28,8 +28,8 @@ def remove_item_from_cart(user_id, product_id, cursor, conn):
 
         cursor.execute("""
             DELETE FROM order_items
-            WHERE order_id = %s AND product_id = %s;
-        """, (order_id, product_id))
+            WHERE id = %s;
+        """, (item_id))
 
         cursor.execute("""
             SELECT COUNT(*) FROM order_items WHERE order_id = %s;
@@ -119,17 +119,21 @@ def handler(event, context):
             'headers': {'Content-Type': 'application/json'}
         }
 
-    body = json.loads(event['body'])
-    product_id = body.get('product_id')
+    body = json.loads(event['body']) if event.get('body') else {}
+    path_parameters = event.get('pathParameters', None)
+    if path_parameters is not None:
+        item_id = path_parameters.get('id')
+    else:
+        item_id = None
 
     conn = get_connection()
     cursor = conn.cursor()
     user_id = user_data['sub']
 
-    if not product_id:
-        return remove_all_items_cart(cursor, conn)
+    if not item_id:
+        return remove_all_items_cart(user_id, cursor, conn)
 
-    response = remove_item_from_cart(user_id, product_id, cursor, conn)
+    response = remove_item_from_cart(user_id, item_id, cursor, conn)
 
     cursor.close()
     conn.close()

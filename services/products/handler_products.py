@@ -14,7 +14,7 @@ def handler(event, context):
         cursor.execute("""
             SELECT product.name, price, description, 
                 category.id AS category_id, 
-                category.name AS category_name
+                category.name AS category_name, product.id_product AS product_id
             FROM product 
             LEFT JOIN category ON category.id = product.category_id
         """)
@@ -22,7 +22,8 @@ def handler(event, context):
         products = cursor.fetchall()
 
         product_list = [
-            {
+            {   
+                'product_id': product_id,
                 'name': name, 
                 'price': float(price), 
                 'picture_url': "https://m.media-amazon.com/images/I/71MPpz9jw9L._AC_SX679_.jpg",
@@ -32,7 +33,7 @@ def handler(event, context):
                     'name': category_name
                 }
             } 
-            for name, price, description, category_id, category_name in products
+            for name, price, description, category_id, category_name, product_id in products
         ]
 
         return {
