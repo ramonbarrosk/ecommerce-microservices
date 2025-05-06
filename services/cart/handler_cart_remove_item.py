@@ -57,7 +57,11 @@ def remove_item_from_cart(user_id, product_id, cursor, conn):
             'headers': {'Content-Type': 'application/json'}
         }
 
-def remove_all_items_cart(cursor, conn):
+    finally:
+        cursor.close()
+        conn.close()
+
+def remove_all_items_cart(user_id, cursor, conn):
     try:
         cursor.execute("""
             SELECT id FROM orders
@@ -78,17 +82,11 @@ def remove_all_items_cart(cursor, conn):
         cursor.execute("""
             DELETE FROM order_items
             WHERE order_id = %s;
-        """, (order_id))
+        """, (order_id,))
 
         cursor.execute("""
-            SELECT COUNT(*) FROM order_items WHERE order_id = %s;
+            DELETE FROM orders WHERE id = %s;
         """, (order_id,))
-        item_count = cursor.fetchone()[0]
-
-        if item_count == 0:
-            cursor.execute("""
-                DELETE FROM orders WHERE id = %s;
-            """, (order_id,))
 
         conn.commit()
 
@@ -97,6 +95,18 @@ def remove_all_items_cart(cursor, conn):
             'body': json.dumps({'message': 'All items from cart removed successfully'}),
             'headers': {'Content-Type': 'application/json'}
         }
+
+    except Exception as e:
+        conn.rollback()
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)}),
+            'headers': {'Content-Type': 'application/json'}
+        }
+
+    finally:
+        cursor.close()
+        conn.close()
 
 def handler(event, context):
     token = event['headers'].get('Authorization', '').replace('Bearer ', '')
