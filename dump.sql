@@ -24,72 +24,90 @@ CREATE TABLE IF NOT EXISTS customers (
 -- Inserindo categorias apenas se não existirem
 INSERT INTO category (name)
 VALUES 
-    ('Electronics'),
-    ('Books'),
-    ('Clothing'),
-    ('Toys'),
-    ('Home & Kitchen')
+    ('Combos'),
+    ('Clássico')
 ON CONFLICT (name) DO NOTHING;
 
--- Inserindo produtos apenas se não existirem
-INSERT INTO product (name, description, price, category_id)
-SELECT 'Smartphone X1', 'Latest smartphone with 128GB storage', 699.99, c.id
-FROM category c WHERE c.name = 'Electronics'
+-- Taco Loka
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Taco Loka', 'Um taco crocante recheado com carne temperada, alface fresquinha e tomate. O sabor mais loko do pedaço!', 14.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.15.47.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020100Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=687c4fb8e68cba05025b69d5a8ea882cb6aa75e886562e0d0444f8235a783b50'
+FROM category c WHERE c.name = 'Clássico'
 AND NOT EXISTS (
-    SELECT 1 FROM product p WHERE p.name = 'Smartphone X1'
+    SELECT 1 FROM product p WHERE p.name = 'Taco Loka'
 );
 
-INSERT INTO product (name, description, price, category_id)
-SELECT 'Laptop Pro 15', 'High-performance laptop for professionals', 1299.99, c.id
-FROM category c WHERE c.name = 'Electronics'
+-- Pimentinha
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Pimentinha', 'Uma explosão de sabor em formato mini! Ideal pra quem gosta de fogo na boca.', 3.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.15.47%20%281%29.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020022Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=1ba65f0bfec760540df0c65d4c8095121bc46382fbd1d46f9ef8bbb89d45b5e0'
+FROM category c WHERE c.name = 'Clássico'
 AND NOT EXISTS (
-    SELECT 1 FROM product p WHERE p.name = 'Laptop Pro 15'
+    SELECT 1 FROM product p WHERE p.name = 'Pimentinha'
 );
 
-INSERT INTO product (name, description, price, category_id)
-SELECT 'Wireless Headphones', 'Noise-cancelling Bluetooth headphones', 199.99, c.id
-FROM category c WHERE c.name = 'Electronics'
+-- Nachos Crocantes
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Nachos Crocantes', 'Triângulos dourados e crocantes servidos puros ou com muito queijo. Um vício!', 9.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.15.48.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020149Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=9ec420f1a7e8029792af5e7c21e832242563d67aea1ab7a76c31e49d909cdf65'
+FROM category c WHERE c.name = 'Clássico'
 AND NOT EXISTS (
-    SELECT 1 FROM product p WHERE p.name = 'Wireless Headphones'
+    SELECT 1 FROM product p WHERE p.name = 'Nachos Crocantes'
 );
 
-INSERT INTO product (name, description, price, category_id)
-SELECT 'The Great Gatsby', 'Classic novel by F. Scott Fitzgerald', 14.99, c.id
-FROM category c WHERE c.name = 'Books'
+-- GuacaLover
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'GuacaLover', 'Guacamole cremoso feito com abacates selecionados e um toque de limão. Pra mergulhar sem fim!', 11.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.15.48%20%281%29.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020125Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=c3934a5748952f0b240fc9e135e7c9a28e41efc7d7f591f7c623c5a102ee64a5'
+FROM category c WHERE c.name = 'Clássico'
 AND NOT EXISTS (
-    SELECT 1 FROM product p WHERE p.name = 'The Great Gatsby'
+    SELECT 1 FROM product p WHERE p.name = 'GuacaLover'
 );
 
-INSERT INTO product (name, description, price, category_id)
-SELECT 'Jeans Slim Fit', 'Comfortable slim fit jeans', 49.99, c.id
-FROM category c WHERE c.name = 'Clothing'
+-- Burrito
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Burrito', 'Enrolado com carinho, recheado com carne, feijão, queijo e aquele tempero especial.', 18.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.21.46.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020424Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=4c32b828ac28a7eab6af0b825d5ff1380d43676d7a7480a206343c291e1913f4'
+FROM category c WHERE c.name = 'Clássico'
 AND NOT EXISTS (
-    SELECT 1 FROM product p WHERE p.name = 'Jeans Slim Fit'
+    SELECT 1 FROM product p WHERE p.name = 'Burrito'
 );
 
-INSERT INTO product (name, description, price, category_id)
-SELECT 'Action Figure - Superhero', 'Collectible superhero toy', 24.99, c.id
-FROM category c WHERE c.name = 'Toys'
+-- Pozole da Casa
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Pozole da Casa', 'Tradicional sopa mexicana com milho, carne suculenta e acompanhamentos frescos.', 19.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.21.45.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020404Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=38098982cfa50f16743f1e8776803e5b0e697ad67d8ebe39f290469222a19734'
+FROM category c WHERE c.name = 'Clássico'
 AND NOT EXISTS (
-    SELECT 1 FROM product p WHERE p.name = 'Action Figure - Superhero'
+    SELECT 1 FROM product p WHERE p.name = 'Pozole da Casa'
 );
 
-INSERT INTO product (name, description, price, category_id)
-SELECT 'Non-stick Frying Pan', 'Durable non-stick frying pan 28cm', 34.90, c.id
-FROM category c WHERE c.name = 'Home & Kitchen'
+
+
+-- Combo Pimenta + Taco
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Combo Pimenta + Taco', 'Um taco recheado e uma pimentinha ardente para completar o sabor mexicano.', 16.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.15.49.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020231Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=6dce2abba280bce6a4ae1912210172c5c8af0e94b9aa494d419dce9c368925b9'
+FROM category c WHERE c.name = 'Combos'
 AND NOT EXISTS (
-    SELECT 1 FROM product p WHERE p.name = 'Non-stick Frying Pan'
+    SELECT 1 FROM product p WHERE p.name = 'Combo Pimenta + Taco'
 );
 
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1
-        FROM information_schema.columns 
-        WHERE table_name = 'product' 
-          AND column_name = 'picture_url'
-    ) THEN
-        ALTER TABLE product ADD COLUMN picture_url TEXT;
-    END IF;
-END;
-$$;
+-- Combo Nachos + Guacamole
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Combo Nachos + Guacamole', 'Nachos crocantes com um potinho de guacamole fresquinho. Perfeito pra dividir (ou não).', 18.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.21.52%20%281%29.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020444Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=c2ac579ef0e2d24bc10d24ebbbb1289a06fa78e93bebaddcc80a7f050e314014'
+FROM category c WHERE c.name = 'Combos'
+AND NOT EXISTS (
+    SELECT 1 FROM product p WHERE p.name = 'Combo Nachos + Guacamole'
+);
+
+-- Combo Triforce Mex
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Combo Triforce Mex', 'Pimentinha, taco recheado e nachos no mesmo combo. Três vezes mais sabor!', 24.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/WhatsApp%20Image%202025-05-06%20at%2022.17.32.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCICF2r%2Bo8l4h8%2FK0bRscnG51sE6S6TTPEBFcLsDL%2BS0w9AiEA0117lCMK4lsaAE57p5b5tgM7Z2bT4PFOpkKzKJIZjYYquQMIUxAAGgw1OTAxODM2NTUyNjMiDJWz6S7sZ6XbNtSJGSqWAzHNJhsrpQAeIgxS9JICjDQJd0U6YLAAq%2FBIbfQPiD8esWpEGdGD6Kn3bnEDQIKGMxDoDwXS1ct%2F489FNYNAIWt1YeM6aUJcI0cB1tVPdw27LZIR14PIl%2B3kTLJM25Q0tKGnzZfIByzFNLHEBs90m7%2BXHHBQDGxAqj6%2FD8%2FaNf5MH19PJ%2Bl19hUP5M3w7qDm0e0dN64rAvs%2B7DjOuUoOf%2FtF3nSL2YIgdZjLJFCSgMTI3xHde8tsI3I5IRMj9ze26tvp127HRySSR5hXX0W0PedLnr%2F0GmYg7G8noRyn2dM4TgpWln6F0dVtW8DoynijEyYyc0%2F17q8SYv7KS316eJP4J7qy0VraEW9BFRyHKvDQa9nVjRDtqcqGWucth4zwNUcu%2BfLOURWc0KYqd78AUzOYRDWS8po2Ef5X3w28EPBBFBRIqbvyEne64benSO7uTVjRZYbYLTUpdxzRZQUiA%2FHWJVPLUZNZg6G2m4AL0ps5bFePw1c1CVtMhTHaulMBN11OZzCusMS4TkS3H46ZgwQ1lIz%2FGOMwtezqwAY63gKfdmZSYuIhPFZOXDLGiufPLN1P1k3QkJk8EvT%2FI78gHj8BY0ckfOnHSTTup8ErdRLclxU3d8UYevjN4QDD02QVxvFrqqHalVkaFlvJYSD5JTh5%2FA9sBRETeebxcwoqU%2FUo%2FFYIamAvGFb38S0zPmy9AXUSml0O67b1vLNk2C1aE%2B46V9AE4ax0eaAnfOrOTe9BBgpFGn0dxlsvQKMdJw1ZQBCcL6KBO9w1Doojin2nQ2ntac9cOXd%2BktNTRTzjXsojGMGOg5sOBcXXKfO680oD7PSRA137QKIr9gEYNFFSIFsRwaQHa%2FjQt%2Bu66R6di%2FbqIm0fHAIH%2BQ7IuQJAXoHpQKHMdkloFb2UiA5ZaVGaZPOlfxrxgQ2vScZT2%2B3zkBXWLOKBquu4sjx%2FICtE4srcOzJsCrOD3Ki3TuZPjhnKg3KsQdyqz46CMq8lBfDg6eD6t6ncv5EPnpOQLgS%2B8Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P4TU6MW4F%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020342Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=9e259ed0a29418b81757def771581edbbec2d018d3e71681d2e3e99c603a319a'
+FROM category c WHERE c.name = 'Combos'
+AND NOT EXISTS (
+    SELECT 1 FROM product p WHERE p.name = 'Combo Triforce Mex'
+);
+
+-- Combo Burrito + Guacamole
+INSERT INTO product (name, description, price, category_id, picture_url)
+SELECT 'Combo Burrito + Guacamole', 'Burritão suculento e guacamole cremoso — o casal perfeito.', 26.90, c.id, 'https://bucketengenhariadesoftware.s3.us-east-2.amazonaws.com/burrito.jpeg?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKr%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJGMEQCIADCdZMBg1YuW8TeoZomKt1LC30gTg%2Fz0gajJ6xzMmJ0AiBuuj0YonUphjCR%2FhToM5wf5976B4lh%2FLYFBBg%2F08NJzyq5AwhTEAAaDDU5MDE4MzY1NTI2MyIMNAlGHUcAzSptUFdgKpYD2neHfa4trl3kzxED7YhDQlBTm75QIO6YG6pt6QbkUfxG%2BaPVi4hNt7t8cx1rlfV6ySTFyBywi9U3r3ws%2FhsZog5wKmtWzECLRzp1hce8XC%2Fnv4XSJTaQgODyYEA2XdWe%2BtaqBCvdrzfoMOUXb6FRdRuXmBd3EwsHP2yjkZsm4L2B0FJSBpQr5%2FAjIMzq617gYyIL9JNIJkcgvF1QYENtPrbQwdbGhs7Q7yL%2FOFw6bSUdwf4L%2BIKLOkMJLKyhXiapWSAVxLzo7w1z1q8C1NLNRf4XrHSnEqkM7myYJlvoCRKJwW%2F9roDRpM58paRVN%2BbXE%2FEfK1yY4Andcj29uzOa3oMzLV7ZWtlL66vXPMqGKbP%2BYN07cquHN9nQ0gbI9cE0NcmBxXqUeYUYROKTy%2FzNQyR69auEKMRn0Fh%2Bx3kYL1tpULnALbkmbLUq7URh50saFzfEJzEAQOFcdvTX5CmCwGkL8fLevRM4ks0q0i%2F5F7kG2s6VYQVKkumeiBm8l%2BhMzfhojPPbIjbFru0dMbcL7DvGPruqezC17OrABjrfAmS9f%2BsW8tdmPlRQnsafkNM99%2BnYIMdtMhCdsbHo5BswCxFlyte%2FdE2TQFUUB82EDrXjvyQvtd9WYYQ6fj0bVCNLNr01CywwSStagTDu1nKsZVNLT63PHDzboV7e8xXKS3wuyZdiHsQSzebV6JDZPL2WWdWawXWIiJJw8qg2MNM4T8RkXsr2fmCHYSu6OsBdyvILF51EsBTIGu07EshRRuj2QINJlvC3Z8lLeSTltZUXLO7VRXnWDj24e3nhzZj%2Fu%2B%2Ffqe54BeikX3wxFKKiR9fUhwob9TLcFp7TPytyqz1MkeMfQ%2F0IVhQrsw3c96L3lbZSHyAdY%2FzQTKokXlJDC%2Bh1YaCAIRrcdM8UQx1dzVz8l6oMTHoSofjZBlFRAT8g8ODEiPR8WRdwtfgmlgjn1ExkpWRQ7z8qBHGUDdCrIp80J6ajfZLmZuq8u4sFXYyY6aXHVeVT6rouuSsyA35Dfg%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAYS2NP45P5OVLNXO6%2F20250507%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20250507T020822Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=7c540aae814251d3a654955c2bfe2f24853166a4f91651c45f66fe86c09a5076'
+FROM category c WHERE c.name = 'Combos'
+AND NOT EXISTS (
+    SELECT 1 FROM product p WHERE p.name = 'Combo Burrito + Guacamole'
+);
+
+

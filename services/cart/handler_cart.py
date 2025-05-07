@@ -30,7 +30,8 @@ def handler(event, context):
                 p.description AS product_description,
                 oi.quantity,
                 oi.price_at_purchase,
-                oi.id AS item_id
+                oi.id AS item_id,
+                p.picture_url
             FROM orders o
             JOIN order_items oi ON oi.order_id = o.id
             JOIN product p ON p.id_product = oi.product_id
@@ -53,7 +54,8 @@ def handler(event, context):
                 'product_description': row[2],
                 'quantity': row[3],
                 'price_at_purchase': float(row[4]),
-                'item_id': row[5]
+                'item_id': row[5],
+                'picture_url': row[6]
             })
         
         total_items_cart = len(cart_details['items'])

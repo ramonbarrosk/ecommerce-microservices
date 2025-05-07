@@ -14,7 +14,7 @@ def handler(event, context):
         cursor.execute("""
             SELECT product.name, price, description, 
                 category.id AS category_id, 
-                category.name AS category_name, product.id_product AS product_id
+                category.name AS category_name, product.id_product AS product_id, product.picture_url
             FROM product 
             LEFT JOIN category ON category.id = product.category_id
         """)
@@ -26,14 +26,14 @@ def handler(event, context):
                 'product_id': product_id,
                 'name': name, 
                 'price': float(price), 
-                'picture_url': "https://m.media-amazon.com/images/I/71MPpz9jw9L._AC_SX679_.jpg",
+                'picture_url': picture_url,
                 'description': description, 
                 'category': {
                     'id': category_id, 
                     'name': category_name
                 }
             } 
-            for name, price, description, category_id, category_name, product_id in products
+            for name, price, description, category_id, category_name, product_id, picture_url in products
         ]
 
         return {
