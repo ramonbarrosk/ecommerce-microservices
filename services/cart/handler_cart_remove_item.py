@@ -29,7 +29,7 @@ def remove_item_from_cart(user_id, item_id, cursor, conn):
         cursor.execute("""
             DELETE FROM order_items
             WHERE id = %s;
-        """, (item_id))
+        """, (item_id,))
 
         cursor.execute("""
             SELECT COUNT(*) FROM order_items WHERE order_id = %s;

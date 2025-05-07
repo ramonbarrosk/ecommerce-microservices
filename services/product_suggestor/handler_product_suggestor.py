@@ -75,6 +75,27 @@ def recommend_products(user_id):
             if recommendations_encoded[i] > 0.5 and all_products[i] not in user_purchase_history
         ]
         
+        cursor.execute("""
+            SELECT DISTINCT ON (p.name) 
+                p.name, p.description, p.price, p.picture_url
+            FROM product p
+            WHERE p.name = ANY(%s);
+        """, (recommendations,))
+        recommended_product_rows = cursor.fetchall()
+
+        cursor.execute("""
+            DELETE FROM product
+            WHERE category_id = 24;
+        """)
+
+        for name, description, price, picture_url in recommended_product_rows:
+            cursor.execute("""
+                INSERT INTO product (name, description, price, category_id, picture_url)
+                VALUES (%s, %s, %s, %s, %s);
+            """, (name, description, price, 24, picture_url))
+
+        conn.commit()
+
         return {
             'statusCode': 200,
             'body': json.dumps({
@@ -84,7 +105,6 @@ def recommend_products(user_id):
                 'Content-Type': 'application/json'
             }
         }
-        
     except Exception as e:
         return {
             'statusCode': 500,

@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS customers (
 INSERT INTO category (name)
 VALUES 
     ('Combos'),
-    ('Clássico')
+    ('Clássico'),
+    ('Recomendados')
 ON CONFLICT (name) DO NOTHING;
 
 -- Taco Loka
