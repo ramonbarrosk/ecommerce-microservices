@@ -41,6 +41,7 @@ def calculate_distance(cep):
         if 'erro' in data:
             return False 
 
+        complete_json = data
         city = data.get('localidade')
         if not city:
             return False
@@ -55,7 +56,7 @@ def calculate_distance(cep):
         origin = [-9.645, -35.733]
         distance = geodesic(origin, destination).kilometers
 
-        return [round(distance, 2), name]
+        return [round(distance, 2), complete_json]
 
     except (requests.RequestException, ValueError, KeyError) as e:
         print(f"Erro ao calcular distância: {e}")
@@ -93,15 +94,16 @@ def handler(event, context):
             }
         }
 
-    distance, name = result
+    distance, result_json = result
 
     base_price = 10.00
     price_per_km = 0.10
     shipping_price = base_price + (distance * price_per_km)
+    result_json['frete'] = shipping_price
 
     return {
             'statusCode': 200,
-            'body': json.dumps({'frete': shipping_price, 'name':name}),
+            'body': json.dumps(result_json),
             'headers': {
                 'Content-Type': 'application/json'
             }
