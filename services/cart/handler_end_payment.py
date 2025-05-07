@@ -8,7 +8,7 @@ from auth import validate_token
 
 VALID_PAYMENT_METHODS = ['credit_card', 'pix', 'boleto']
 
-def checkout_order(user_id, cart_items, payment_method, cursor, conn):
+def checkout_order(user_id, payment_method, cursor, conn):
     if payment_method not in VALID_PAYMENT_METHODS:
         return {
             'statusCode': 400,
@@ -34,31 +34,7 @@ def checkout_order(user_id, cart_items, payment_method, cursor, conn):
 
         order_id = order_row[0]
 
-        total = 0
-        item_details = []
-
-        for item in cart_items:
-            product_id = item['product_id']
-            quantity = item['quantity']
-
-            cursor.execute("SELECT price FROM product WHERE id_product = %s", (product_id,))
-            product_row = cursor.fetchone()
-
-            if not product_row:
-                raise Exception(f"Product with id {product_id} not found")
-
-            price = float(product_row[0])
-            total += price * quantity
-            item_details.append((product_id, quantity, price))
-
-        cursor.execute("DELETE FROM order_items WHERE order_id = %s", (order_id,))
-
-        for product_id, quantity, price in item_details:
-            cursor.execute("""
-                INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase)
-                VALUES (%s, %s, %s, %s)
-            """, (order_id, product_id, quantity, price))
-
+        # Atualiza status e método de pagamento
         cursor.execute("""
             UPDATE orders
             SET status = 'done',
@@ -66,23 +42,52 @@ def checkout_order(user_id, cart_items, payment_method, cursor, conn):
             WHERE id = %s
         """, (payment_method, order_id))
 
-        cursor.execute("""
-            INSERT INTO purchase_history (order_id, customer_id, total_amount, payment_method, purchased_at)
-            VALUES (%s, %s, %s, %s, NOW())
-        """, (order_id, user_id, total, payment_method))
-
         conn.commit()
+
+        # Busca os detalhes do pedido finalizado
+        cursor.execute("""
+            SELECT 
+                o.id AS id,
+                p.name AS product_name,
+                p.description AS product_description,
+                oi.quantity,
+                oi.price_at_purchase,
+                oi.id AS item_id,
+                p.picture_url
+            FROM orders o
+            JOIN order_items oi ON oi.order_id = o.id
+            JOIN product p ON p.id_product = oi.product_id
+            WHERE o.id = %s
+        """, (order_id,))
+
+        rows = cursor.fetchall()
+
+        order_details = {
+            'order_id': order_id,
+            'status': 'confirmed',
+            'payment_method': payment_method,
+            'items': []
+        }
+
+        for row in rows:
+            order_details['items'].append({
+                'product_name': row[1],
+                'product_description': row[2],
+                'quantity': row[3],
+                'price_at_purchase': float(row[4]),
+                'item_id': row[5],
+                'picture_url': row[6]
+            })
+
+        total = sum(item['quantity'] * item['price_at_purchase'] for item in order_details['items'])
+        order_details['total'] = round(total, 2)
+        order_details['total_count'] = len(order_details['items'])
 
         return {
             'statusCode': 200,
             'body': json.dumps({
                 'message': 'Order placed successfully',
-                'order': {
-                    'order_id': order_id,
-                    'status': 'confirmed',
-                    'payment_method': payment_method,
-                    'total': round(total, 2)
-                }
+                'order': order_details
             }),
             'headers': {'Content-Type': 'application/json'}
         }
@@ -108,13 +113,12 @@ def handler(event, context):
 
     try:
         body = json.loads(event['body'])
-        cart_items = body.get('cart_items', [])
         payment_method = body.get('payment_method')
 
-        if not cart_items or not payment_method:
+        if not payment_method:
             return {
                 'statusCode': 400,
-                'body': json.dumps({'message': 'Missing cart_items or payment_method'}),
+                'body': json.dumps({'message': 'Missing payment_method'}),
                 'headers': {'Content-Type': 'application/json'}
             }
 
@@ -122,7 +126,7 @@ def handler(event, context):
         cursor = conn.cursor()
         user_id = user_data['sub']
 
-        response = checkout_order(user_id, cart_items, payment_method, cursor, conn)
+        response = checkout_order(user_id, payment_method, cursor, conn)
 
         cursor.close()
         conn.close()
