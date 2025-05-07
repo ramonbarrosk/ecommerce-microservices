@@ -85,14 +85,14 @@ def recommend_products(user_id):
 
         cursor.execute("""
             DELETE FROM product
-            WHERE category_id = 24;
+            WHERE category_id = 15;
         """)
 
         for name, description, price, picture_url in recommended_product_rows:
             cursor.execute("""
                 INSERT INTO product (name, description, price, category_id, picture_url)
                 VALUES (%s, %s, %s, %s, %s);
-            """, (name, description, price, 24, picture_url))
+            """, (name, description, price, 15, picture_url))
 
         conn.commit()
 
