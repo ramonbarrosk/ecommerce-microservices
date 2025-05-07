@@ -80,3 +80,16 @@ FROM category c WHERE c.name = 'Home & Kitchen'
 AND NOT EXISTS (
     SELECT 1 FROM product p WHERE p.name = 'Non-stick Frying Pan'
 );
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM information_schema.columns 
+        WHERE table_name = 'product' 
+          AND column_name = 'picture_url'
+    ) THEN
+        ALTER TABLE product ADD COLUMN picture_url TEXT;
+    END IF;
+END;
+$$;

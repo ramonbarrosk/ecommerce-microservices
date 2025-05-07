@@ -9,6 +9,11 @@ provider:
 plugins:
   - serverless-offline
 
+custom:
+  serverless-offline:
+    host: 0.0.0.0
+    port: 3000
+
 functions:
   ordersFunction:
     handler: services/orders/handler_orders.handler
@@ -60,7 +65,7 @@ functions:
     handler: services/cart/handler_cart_add_item.handler
     events:
       - http:
-          path: cart
+          path: cart/add_item
           method: post
 
   cartDeleteItemFunction:
@@ -70,7 +75,7 @@ functions:
           path: cart
           method: delete
       - http:
-          path: cart/{id}
+          path: cart/remove_item/{id}
           method: delete 
 
   cartFunction:

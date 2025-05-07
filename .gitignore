@@ -2,3 +2,9 @@ node_modules
 __pycache__
 .venv
 venv
+meu_ambiente
+venv/
+env/
+*/venv/
+*/env/
+meu_ambiente/

@@ -26,16 +26,15 @@ def handler(event, context):
         cursor.execute("""
             SELECT 
                 o.id AS id,
-                SUM(oi.price_at_purchase * oi.quantity) AS total_pedido
                 p.name AS product_name,
                 p.description AS product_description,
                 oi.quantity,
-                oi.price_at_purchase
+                oi.price_at_purchase,
+                oi.id AS item_id
             FROM orders o
             JOIN order_items oi ON oi.order_id = o.id
             JOIN product p ON p.id_product = oi.product_id
             WHERE o.customer_id = %s AND o.status =  %s
-            GROUP BY o.id, p.name, p.description
             ORDER BY o.created_at DESC;
         """, (user_id, 'pending'))
 
@@ -50,13 +49,14 @@ def handler(event, context):
 
         for row in rows:
             cart_details['items'].append({
-                'product_name': row[5],
-                'product_description': row[6],
+                'product_name': row[1],
+                'product_description': row[2],
                 'quantity': row[3],
                 'price_at_purchase': float(row[4]),
+                'item_id': row[5]
             })
         
-        total_items_cart = cart_details['items'].size
+        total_items_cart = len(cart_details['items'])
 
         total_pedido = sum(item['quantity'] * item['price_at_purchase'] for item in cart_details['items'])
         cart_details['total'] = total_pedido
@@ -65,7 +65,7 @@ def handler(event, context):
 
         return {
             'statusCode': 200,
-            'body': json.dumps(list(orders.values())),
+            'body': json.dumps(cart_details),
             'headers': {
                 'Content-Type': 'application/json'
             }

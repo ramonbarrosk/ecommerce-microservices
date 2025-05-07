@@ -7,15 +7,6 @@ from db import get_connection
 from auth import validate_token
 
 def handler(event, context):
-    token = event['headers'].get('Authorization', '').replace('Bearer ', '')
-
-    user_data = validate_token(token)
-    if not user_data:
-        return {
-            'statusCode': 401,
-            'body': json.dumps({'message': 'Unauthorized'})
-        }
-
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -23,7 +14,7 @@ def handler(event, context):
         cursor.execute("""
             SELECT product.name, price, description, 
                 category.id AS category_id, 
-                category.name AS category_name 
+                category.name AS category_name, product.id_product AS product_id
             FROM product 
             LEFT JOIN category ON category.id = product.category_id
         """)
@@ -31,16 +22,18 @@ def handler(event, context):
         products = cursor.fetchall()
 
         product_list = [
-            {
+            {   
+                'product_id': product_id,
                 'name': name, 
                 'price': float(price), 
+                'picture_url': "https://m.media-amazon.com/images/I/71MPpz9jw9L._AC_SX679_.jpg",
                 'description': description, 
                 'category': {
                     'id': category_id, 
                     'name': category_name
                 }
             } 
-            for name, price, description, category_id, category_name in products
+            for name, price, description, category_id, category_name, product_id in products
         ]
 
         return {
