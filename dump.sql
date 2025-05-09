@@ -3,6 +3,24 @@ CREATE TABLE IF NOT EXISTS category (
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
+CREATE TABLE IF NOT EXISTS configurations (
+    id VARCHAR(100) PRIMARY KEY,
+    status BOOLEAN NOT NULL DEFAULT false
+);
+
+INSERT INTO configuracoes (id_configuracao, status) VALUES
+('mostrar_recomendacoes', true),
+('mostrar_popup_carrinho', true),
+('mostrar_descricao_produto', true),
+('calcular_frete_estimado', true),
+('permitir_remocao_produto', false),
+('permitir_pagamento_pix', true),
+('permitir_pagamento_cartao_credito', false),
+('permitir_pagamento_boleto', false),
+('exibir_resumo_antes_pagamento', false)
+ON CONFLICT (id_configuracao) DO NOTHING;
+
+
 CREATE TABLE IF NOT EXISTS product (
     id_product SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
