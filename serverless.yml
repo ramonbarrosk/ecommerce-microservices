@@ -98,3 +98,10 @@ functions:
       - http:
           path: configurations
           method: post
+
+  getconfigFunction:
+    handler: services/configurations/handler_get_configurations.handler
+    events:
+      - http:
+          path: configurations
+          method: get
