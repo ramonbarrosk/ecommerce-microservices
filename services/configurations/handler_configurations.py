@@ -2,12 +2,9 @@ import psycopg2
 import os
 import sys
 import json
-
 from http import HTTPStatus
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'common')))
 from db import get_connection
-from auth import validate_token
 
 def handler(event, context):
     conn = get_connection()
