@@ -69,15 +69,7 @@ Cria um novo cliente na plataforma.
 
 ### `POST /dev/products`
 
-Retorna a lista de produtos associados a um pedido.
-
-**Requisição:**
-
-```json
-{
-  "id_pedido": 123
-}
-```
+Retorna a lista de produtos
 
 **Resposta:**
 
