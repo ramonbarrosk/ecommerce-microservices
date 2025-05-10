@@ -91,3 +91,17 @@ functions:
       - http:
           path: checkout
           method: post
+
+  configFunction:
+    handler: services/configurations/handler_configurations.handler
+    events:
+      - http:
+          path: configurations
+          method: post
+
+  getconfigFunction:
+    handler: services/configurations/handler_get_configurations.handler
+    events:
+      - http:
+          path: configurations
+          method: get
